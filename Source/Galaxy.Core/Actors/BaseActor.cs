@@ -1,7 +1,5 @@
 ﻿#region using
 
-using System;
-using System.Diagnostics;
 using System.Drawing;
 using Galaxy.Core.Environment;
 
@@ -65,7 +63,6 @@ namespace Galaxy.Core.Actors
     public bool IsPressed(VirtualKeyStates key)
     {
       var isPressed = KeyState.IsPressed(key);
-      //
       return isPressed;
     }
 

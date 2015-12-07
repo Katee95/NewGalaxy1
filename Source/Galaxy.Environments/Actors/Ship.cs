@@ -70,7 +70,7 @@ namespace Galaxy.Environments.Actors
     public override void Load()
     {
         Load(@"Assets\ship.png");
-        //InitTimer();
+        
         if (m_flyTimer == null)
         {
             m_flyTimer = new Stopwatch();

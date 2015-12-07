@@ -7,7 +7,6 @@ namespace Galaxy.Core.Environment
   {
     Point GetPlayerPosition();
     Size GetLevelSize();
-    void AddBullet(BaseActor pEnemyBullet);
   }
     
  } 

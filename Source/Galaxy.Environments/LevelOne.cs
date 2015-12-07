@@ -20,7 +20,7 @@ namespace Galaxy.Environments
     public class LevelOne : BaseLevel
     {
         private int m_frameCount;
-
+        private Stopwatch m_flyTimer;
 
         #region Constructors
 
@@ -54,7 +54,7 @@ namespace Galaxy.Environments
 
                 Actors.Add(ship2);
             }
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
             {
                 var ship3 = new Ship3(this);
                 int positionY = ship3.Height + 70;
@@ -62,75 +62,56 @@ namespace Galaxy.Environments
                 ship3.Position = new Point(positionX, positionY);
 
                 //присваиваем значение Ship куда он должен лететь true false
-                if (i == 0 || i == 1 || i == 2)
-                {
-                    ship3.Movement = true;
-                }
-                else
-                {
-                    ship3.Movement = false;
-                }
 
+                ship3.Movement = i < 2; 
                 Actors.Add(ship3);
             }
 
-            for (int i = 0; i < 5; i++)
-            {
-                var ship4 = new Ship(this);
-                int positionY3 = ship4.Height + 70;
-                int positionX3 = 180 + i * (ship4.Width + 50);
-                ship4.Position = new Point(positionX3, positionY3);
-
-                Actors.Add(ship4);
-            }
-
-            // Player
+           // Player
             Player = new PlayerShip(this);
             int playerPositionX = Size.Width/2 - Player.Width/2;
             int playerPositionY = Size.Height - Player.Height - 50;
             Player.Position = new Point(playerPositionX, playerPositionY);
             Actors.Add(Player);
 
-          
+            var superm = new Superman(this);
+            int positionYS = superm.Height + 10;
+            int positionXS = superm.Width + 10;
+            superm.Position = new Point(positionXS, positionYS);
+            Actors.Add(superm);
+    
         }
 
         #endregion
 
         #region Overrides
 
-        public void BShots()
+        private void b_shots()
         {
-            if (Shot.ElapsedMilliseconds < 100)
+            if (shot.ElapsedMilliseconds < 1000)
                 return;
+            var enbull = new EnemyBullet(this);
+            var enlis = Actors.Where((actor) => actor is Ship).ToList();
 
-            var bR = new BulletER(this);
-
-            var lis = Actors.Where((actor) => actor is Ship || actor is Ship2).ToList();
-
-            if (lis.Count > 0)
+            if (enlis.Count() > 0)
             {
                 Random rd = new Random();
-                int a = rd.Next(lis.Count);
+                int a = rd.Next(enlis.Count());
+                var mission = enlis[a].Position;
+                enbull.Position = new Point(mission.X, mission.Y + 10);
 
-                var mission = lis[a].Position;
-                bR.Position = new Point(mission.X, mission.Y + 10);
-
-                bR.Load();
-
-                Actors.Add(bR);
-
-                Shot.Restart();
+                enbull.Load();
+                Actors.Add(enbull);
+                shot.Restart();
             }
         }
 
        private void h_dispatchKey()
         {
             if (!IsPressed(VirtualKeyStates.Space)) return;
-
             if (m_frameCount % 10 != 0) return;
-
-
-            Bullet bullet = new Bullet(this)
+            
+           Bullet bullet = new Bullet(this)
             {
                 Position = Player.Position
             };
@@ -138,21 +119,21 @@ namespace Galaxy.Environments
             bullet.Load();
             Actors.Add(bullet);
         }
-
+      
         public override BaseLevel NextLevel()
         {
             return new StartScreen();
         }
 
-        private Stopwatch Shot = new Stopwatch();
-        
+        private Stopwatch shot = new Stopwatch();
 
-        public override void Update()
+       public override void Update()
         {
             m_frameCount++;
             h_dispatchKey();
-            BShots();
+            b_shots();
             base.Update();
+
 
             IEnumerable<BaseActor> killedActors = CollisionChecher.GetAllCollisions(Actors);
 
@@ -172,17 +153,19 @@ namespace Galaxy.Environments
             }
 
             if (Player.CanDrop)
+            {
                 Failed = true;
+            }
 
             if (Actors.All(actor => actor.ActorType != ActorType.Enemy))
-                
+            
                 Success = true;
         }
 
         public override void Load()
         {
             base.Load();
-            Shot.Start();
+            shot.Start();
         }
 
         #endregion

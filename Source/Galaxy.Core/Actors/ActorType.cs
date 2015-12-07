@@ -4,6 +4,6 @@
   {
     Player,
     Enemy,
-      Superman,
+    Superman,
   }
 }

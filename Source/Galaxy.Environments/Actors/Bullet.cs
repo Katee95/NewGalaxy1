@@ -12,7 +12,7 @@ namespace Galaxy.Environments.Actors
   {
     #region Constant
 
-    private const int Speed = 10;
+    private const int speed = 10;
 
     #endregion
 
@@ -36,7 +36,7 @@ namespace Galaxy.Environments.Actors
 
     public override void Update()
     {
-      Position = new Point(Position.X, Position.Y - Speed);
+      Position = new Point(Position.X, Position.Y - speed);
     }
 
     #endregion

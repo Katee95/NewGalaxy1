@@ -34,7 +34,6 @@ namespace Galaxy.Core.Environment
         #region Protected properties
 
         protected List<BaseActor> Actors { get; set; }
-        protected List<BaseActor> Enemy { get; set; }
         protected string FileName { get; set; }
 
         #endregion
@@ -44,7 +43,6 @@ namespace Galaxy.Core.Environment
         protected BaseLevel()
         {
             Actors = new List<BaseActor>();
-            Enemy = new List<BaseActor>();
             Size = new Size(DefaultWidth, DefaultHeight);
         }
 
@@ -131,6 +129,7 @@ namespace Galaxy.Core.Environment
         protected BaseActor Player { get; set; }
 
         protected BaseActor Superman { get; set; }
+
         #endregion
 
     }

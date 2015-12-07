@@ -7,12 +7,11 @@ using Point = System.Drawing.Point;
 
 namespace Galaxy.Environments.Actors
 {
-    internal class Ship3 : DethAnimationActor
+    class Superman : BaseActor
     {
         #region Constant
 
-        private const long startFlyMs = 2000;
-        private bool sign;
+     private const long StartFlyMs = 2000;
 
         #endregion
 
@@ -25,17 +24,12 @@ namespace Galaxy.Environments.Actors
 
         #region Constructors
 
-        public Ship3(ILevelInfo info) : base(info)
+        public Superman(ILevelInfo info)
+            : base(info)
         {
             Width = 30;
             Height = 30;
-            ActorType = ActorType.Enemy;
-        }
-
-        public bool Movement
-        {
-            get { return sign; }
-            set { sign = value; }
+            ActorType = ActorType.Superman;
         }
 
         #endregion
@@ -51,7 +45,7 @@ namespace Galaxy.Environments.Actors
 
             if (!m_flying)
             {
-                if (m_flyTimer.ElapsedMilliseconds <= startFlyMs) return;
+                if (m_flyTimer.ElapsedMilliseconds <= StartFlyMs) return;
 
                 m_flyTimer.Stop();
                 m_flyTimer = null;
@@ -70,7 +64,7 @@ namespace Galaxy.Environments.Actors
 
         public override void Load()
         {
-            Load(@"Assets\ship3.png");
+            Load(@"Assets\superm.png");
             if (m_flyTimer == null)
             {
                 m_flyTimer = new Stopwatch();
@@ -81,16 +75,25 @@ namespace Galaxy.Environments.Actors
         #endregion
 
         #region Private methods
+        public override bool IsAlive
+        {
+            get
+            {
+                return base.IsAlive;
+            }
+            set
+            {
+                base.IsAlive = true;
+                CanDrop = false;
+            }
+        }
 
         private void h_changePosition()
         {
-            int mov;
-            mov = Movement ? 3 : - 3;
-
-            Position = new Point(Position.X + mov, Position.Y + 3);
-            
-        #endregion
+            int speed = 10;
+            Position = new Point(Position.X + speed, Position.Y + speed );
         }
+
+        #endregion
     }
 }
-
